@@ -3,12 +3,17 @@ const dotenv = require("dotenv").config();
 const colors = require("colors");
 const cors = require("./configs/cors");
 const database = require("./configs/database");
+const fileUpload = require("./configs/fileupload");
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+app.use(fileUpload());
+
+// routes
+app.use("/api/user", require("./routes/userRoute"));
 
 //error middleware
 app.use(require("./middlewares/notFoundMiddleware"));
