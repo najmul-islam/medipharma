@@ -47,19 +47,20 @@ const createVariant = asyncHandler(async (req, res) => {
 // @access  Private (or Admin)
 const updateVariant = asyncHandler(async (req, res) => {
   const { name, price } = req.body;
+  const { id } = req.params;
 
-  const variant = await Variant.findById(req.params.id);
+  const variant = await Variant.findOne({ id });
 
   if (!variant) {
     res.status(404);
     throw new Error("Variant not found");
   }
 
-  const updatedVariant = await Variant.findByIdAndUpdate(
-    req.params.id,
-    { name, price },
-    { new: true }
-  );
+  const filter = { id };
+  const update = { name, price };
+  const option = { new: true };
+
+  const updatedVariant = await Variant.findOneAndUpdate(filter, update, option);
 
   res.status(200).json({ variant: updatedVariant });
 });
@@ -68,14 +69,15 @@ const updateVariant = asyncHandler(async (req, res) => {
 // @route   DELETE /api/variants/:id
 // @access  Private (or Admin)
 const deleteVariant = asyncHandler(async (req, res) => {
-  const variant = await Variant.findById(req.params.id);
+  const { id } = req.id;
+
+  const variant = await Variant.findOneAndDelete({ id });
 
   if (!variant) {
     res.status(404);
     throw new Error("Variant not found");
   }
 
-  await variant.remove();
   res.status(200).json({ message: "Variant removed" });
 });
 
