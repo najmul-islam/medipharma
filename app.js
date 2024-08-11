@@ -14,6 +14,7 @@ app.use(fileUpload());
 
 // routes
 app.use("/api/user", require("./routes/userRoute"));
+app.use("/api/variant", require("./routes/variantRoute"));
 
 //error middleware
 app.use(require("./middlewares/notFoundMiddleware"));
